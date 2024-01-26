@@ -22,6 +22,7 @@ const Header = () => {
     role: 'admin',
   };
 
+  // Logout Handler
   const logoutHanlder = () => {
     console.log('Logged Out');
   };
@@ -49,11 +50,19 @@ const Header = () => {
           </DrawerHeader>
           <DrawerBody>
             <VStack spacing={'10'} alignItems={'flex-start'}>
-              <LinkButton url="/" title="Home" />
-              <LinkButton url="/courses" title="Courses" />
-              <LinkButton url="/request" title="Request A Course" />
-              <LinkButton url="/about" title="About Us" />
-              <LinkButton url="/contact" title="Get In Touch" />
+              <LinkButton url="/" title="Home" onClose={onClose} />
+              <LinkButton url="/courses" title="Courses" onClose={onClose} />
+              <LinkButton
+                url="/request"
+                title="Request A Course"
+                onClose={onClose}
+              />
+              <LinkButton url="/about" title="About Us" onClose={onClose} />
+              <LinkButton
+                url="/contact"
+                title="Get In Touch"
+                onClose={onClose}
+              />
 
               <HStack
                 justifyContent={'space-evenly'}
@@ -65,7 +74,7 @@ const Header = () => {
                   <>
                     <VStack>
                       <HStack>
-                        <NavLink to={'/profile'}>
+                        <NavLink to={'/profile'} onClick={onClose}>
                           <Button variant={'ghost'} colorScheme={'yellow'}>
                             Profile
                           </Button>
@@ -76,7 +85,7 @@ const Header = () => {
                         </Button>
                       </HStack>
                       {user && user.role === 'admin' && (
-                        <NavLink to={'/admin/dashboard'}>
+                        <NavLink to={'/admin/dashboard'} onClick={onClose}>
                           <Button colorScheme={'orange'}>
                             <RiDashboard2Fill />
                             Dashboard
@@ -87,11 +96,11 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <NavLink to={'/login'}>
+                    <NavLink to={'/login'} onClick={onClose}>
                       <Button colorScheme={'blue'}>Login</Button>
                     </NavLink>
                     <p>or</p>
-                    <NavLink to={'/register'}>
+                    <NavLink to={'/register'} onClick={onClose}>
                       <Button colorScheme={'yellow'}>Register</Button>
                     </NavLink>
                   </>
@@ -108,8 +117,8 @@ const Header = () => {
 export default Header;
 
 // Button Function
-const LinkButton = ({ url = '/', title = 'Home' }) => (
-  <NavLink to={url}>
+const LinkButton = ({ url = '/', title = 'Home', onClose }) => (
+  <NavLink onClick={onClose} to={url}>
     <Button variant={'ghost'}>{title}</Button>
   </NavLink>
 );

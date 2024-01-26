@@ -22,7 +22,7 @@ import MetaData from '../../Meta/MetaData';
 const Home = () => {
   return (
     <>
-      <MetaData title={'Learn Hub||An Educational Platform'} />
+      <MetaData title={'Learn Hub || An Educational Platform'} />
       <section className="home">
         <div className="container">
           <Stack
