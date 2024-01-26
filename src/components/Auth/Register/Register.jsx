@@ -31,7 +31,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [imagePrev, setImagePrev] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(null);
 
   //   Register Handler
   const registerHandler = event => {
@@ -107,7 +107,6 @@ const Register = () => {
                 accept="image/*"
                 required
                 id="chooseAvatar"
-                value={image}
                 type="file"
                 focusBorderColor="orange.500"
                 css={fileUploadStyle}
