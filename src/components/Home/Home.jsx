@@ -18,6 +18,7 @@ import { DiAndroid, DiAws } from 'react-icons/di';
 import HomeVideo from '../../assets/videos/intro.mp4';
 import MetaData from '../../Meta/MetaData';
 
+
 const Home = () => {
   return (
     <>
