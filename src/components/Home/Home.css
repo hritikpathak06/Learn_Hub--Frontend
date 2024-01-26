@@ -1,0 +1,61 @@
+.container {
+  height: 100vh;
+  padding: 5rem;
+  box-sizing: border-box;
+}
+
+.home__image {
+  filter: drop-shadow(0 40px 10px rgba(0, 0, 0, 3));
+  animation: image-animation 1s infinite ease-in-out alternate;
+}
+
+.banner_brands > svg {
+  color: #fff;
+  font-size: 3rem;
+  transition: 0.5s;
+}
+
+.banner_brands > svg:hover {
+  color: tomato;
+  cursor: pointer;
+}
+
+.container2 {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container2 > video {
+  border: 1px solid gray;
+  width: 60%;
+  border-radius: 10px;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 0 0 gray;
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes image-animation {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateX(20px);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container2 {
+    height: fit-content;
+  }
+  .container2 > video {
+    width: 100%;
+    border-radius: 0;
+    border: none;
+  }
+}
