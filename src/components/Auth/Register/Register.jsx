@@ -54,7 +54,7 @@ const Register = () => {
     <>
       <MetaData title={'Learn Hub || Register To Enjoy The Courses'} />
       <Container h={'100vh'}>
-        <VStack h={'full'} justifyContent={'center'} spacing={16}>
+        <VStack h={'full'} justifyContent={'center'} marginTop={['5rem', 0]}>
           <Heading children="Welcome To Learn Hub" />
           <form style={{ width: '100%' }} onSubmit={registerHandler}>
             <Box

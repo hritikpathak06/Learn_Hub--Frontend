@@ -28,8 +28,8 @@ const Login = () => {
         <VStack h={'full'} justifyContent={'center'} spacing={16}>
           <Heading children="Welcome Back To Learn Hub" />
           <form style={{ width: '100%' }} onSubmit={loginHandler}>
-            <FormLabel htmlFor="email" children="Email Address" />
             <Box marginY={'4'}>
+            <FormLabel htmlFor="email" children="Email Address" />
               <Input
                 required
                 id="email"
