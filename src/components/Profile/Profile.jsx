@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MetaData from '../../Meta/MetaData';
 import {
   Avatar,
@@ -7,13 +7,23 @@ import {
   HStack,
   Heading,
   Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
   Text,
   VStack,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 import Poster from '../../assets/images/logo-home.png';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
+import { fileUploadCss } from '../Auth/Register/Register';
 
 const Profile = () => {
   const user = {
@@ -56,6 +66,13 @@ const Profile = () => {
     console.log(id);
   };
 
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const changeImageSubmitHandler = (e, image) => {
+    console.log(image);
+    e.preventDefault();
+  };
+
   return (
     <>
       <MetaData title={'Learn Hub || Your Profile'} />
@@ -75,7 +92,7 @@ const Profile = () => {
         >
           <VStack>
             <Avatar boxSize={48} />
-            <Button colorScheme="orange" variant={'ghost'}>
+            <Button colorScheme="orange" variant={'ghost'} onClick={onOpen}>
               Change Pic
             </Button>
           </VStack>
@@ -150,9 +167,82 @@ const Profile = () => {
             </Stack>
           </>
         )}
+        <ChangePhotoBox
+          isOpen={isOpen}
+          onClose={onClose}
+          changeImageSubmitHandler={changeImageSubmitHandler}
+        />
       </Container>
     </>
   );
 };
-
 export default Profile;
+
+
+
+// Update Profile Pic Function
+function ChangePhotoBox({
+  isOpen,
+  onClose,
+  changeImageSubmitHandler,
+  loading,
+}) {
+  const [image, setImage] = useState('');
+  const [imagePrev, setImagePrev] = useState('');
+
+  const changeImage = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImagePrev(reader.result);
+      setImage(file);
+    };
+  };
+
+  const closeHandler = () => {
+    onClose();
+    setImagePrev('');
+    setImage('');
+  };
+  return (
+    <Modal isOpen={isOpen} onClose={closeHandler}>
+      <ModalOverlay backdropFilter={'blur(10px)'} />
+      <ModalContent>
+        <ModalHeader>Change Photo</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Container>
+            <form onSubmit={e => changeImageSubmitHandler(e, image)}>
+              <VStack spacing={'8'}>
+                {imagePrev && <Avatar src={imagePrev} boxSize={'48'} />}
+
+                <Input
+                  type={'file'}
+                  css={{ '&::file-selector-button': fileUploadCss }}
+                  onChange={changeImage}
+                />
+
+                <Button
+                  w="full"
+                  colorScheme={'orange'}
+                  type="submit"
+                >
+                  Change
+                </Button>
+              </VStack>
+            </form>
+          </Container>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button mr="3" onClick={closeHandler}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
