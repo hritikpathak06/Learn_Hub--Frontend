@@ -31,6 +31,7 @@ import {
 } from '../../redux/actions/profileAction';
 import toast from 'react-hot-toast';
 import { loadUser } from '../../redux/actions/userAction';
+import { cancelSubscription } from '../../redux/actions/subscriptionAction';
 
 const Profile = ({ user }) => {
   const removeFromPlaylistHanlder = async id => {
@@ -43,6 +44,7 @@ const Profile = ({ user }) => {
   const dispatch = useDispatch();
 
   const { message, error } = useSelector(state => state.profile);
+  const { message:subscriptionMessage, error:subscriptionError } = useSelector(state => state.subscription);
 
   const changeImageSubmitHandler = (e, image) => {
     // console.log(image);
@@ -52,10 +54,18 @@ const Profile = ({ user }) => {
     dispatch(updateProfilePicture(myForm));
   };
 
+  // Cancel Subscription Handler
+  const cancelSubscriptionHandler = async() => {
+    await dispatch(cancelSubscription());
+    dispatch(loadUser());
+  }
+
   useEffect(() => {
     message && toast.success(message);
     error && toast.error(error);
-  }, [message, error]);
+    subscriptionMessage && toast.success(subscriptionMessage);
+    subscriptionError && toast.error(subscriptionError)
+  }, [message, error,subscriptionError,subscriptionMessage]);
 
   return (
     <>
@@ -97,7 +107,7 @@ const Profile = ({ user }) => {
               <HStack>
                 <Text children="Subscription" fontWeight={'bold'} />
                 {user.subscription && user.subscription.status === 'active' ? (
-                  <Button colorScheme="red">Cancel Subscription</Button>
+                  <Button colorScheme="red" onClick={cancelSubscriptionHandler}>Cancel Subscription</Button>
                 ) : (
                   <NavLink to={'/subscribe'}>
                     <Button colorScheme="orange"> Subscription</Button>

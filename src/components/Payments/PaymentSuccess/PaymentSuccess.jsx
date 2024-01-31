@@ -1,15 +1,27 @@
 import React from 'react';
 import MetaData from '../../../Meta/MetaData';
-import { Box, Button, Container, Heading, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 
 const PaymentSuccess = () => {
+  const search = useSearchParams()[0].get('reference');
   return (
     <>
       <MetaData title={'Learn Hub || Your Payment Has Been Successed'} />
       <Container h={'100vh'} padding={'16'}>
-        <Heading textAlign={['center']} children="You Have Got Pro Pack" mb={6} />
+        <Heading
+          textAlign={['center']}
+          children="You Have Got Pro Pack"
+          mb={6}
+        />
         <VStack
           boxShadow={'lg'}
           pb={'16'}
@@ -32,11 +44,9 @@ const PaymentSuccess = () => {
               </Heading>
             </VStack>
           </Box>
-          <NavLink to={"/profile"}>
-            <Button variant={"ghost"}>Go To Profile</Button>
-            <Heading size={"xs"}>
-              Refrence:jdfehiefifihfhfhf
-            </Heading>
+          <NavLink to={'/profile'}>
+            <Button variant={'ghost'}>Go To Profile</Button>
+            <Heading size={'xs'}>Refrence:{search}</Heading>
           </NavLink>
         </VStack>
       </Container>
