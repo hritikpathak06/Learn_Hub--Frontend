@@ -13,18 +13,20 @@ import {
 } from '@chakra-ui/react';
 import { RiDashboard2Fill, RiLogoutBoxFill, RiMenu2Fill } from 'react-icons/ri';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../../../redux/actions/userAction';
+import toast from 'react-hot-toast';
 
-const Header = () => {
+const Header = ({ isAuthenticated = false, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isAuthenticated = true;
-  const user = {
-    role: 'admin',
-  };
+  const dispatch = useDispatch();
 
   // Logout Handler
   const logoutHanlder = () => {
     console.log('Logged Out');
+    dispatch(logOut());
+    toast.success('User Logged Out Successfully');
   };
 
   return (

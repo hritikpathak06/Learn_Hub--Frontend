@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../Meta/MetaData';
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changePassword } from '../../redux/actions/profileAction';
+import toast from 'react-hot-toast';
+import { loadUser } from '../../redux/actions/userAction';
+import { useNavigate } from 'react-router-dom';
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { message, error } = useSelector(state => state.profile);
+
   // Change Password Handler
-  const changePasswordHandler = event => {
+  const changePasswordHandler = async event => {
     event.preventDefault();
+    await dispatch(changePassword(oldPassword, newPassword));      
+      dispatch(loadUser());
+      navigate("/profile");
+ 
   };
+
+  useEffect(() => {
+    message && toast.success('Password Changed Successfully');
+    error && toast.error(error);
+  },[message,error]);
 
   return (
     <>

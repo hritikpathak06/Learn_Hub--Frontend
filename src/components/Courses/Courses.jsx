@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../Meta/MetaData';
 import {
   Button,
@@ -13,6 +13,12 @@ import {
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 import Poster from '../../assets/images/logo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCourses } from '../../redux/actions/courseAction';
+import Loader from '../Layout/Loader/Loader';
+import { addToPlaylist } from '../../redux/actions/profileAction';
+import toast from 'react-hot-toast';
+import { loadUser } from '../../redux/actions/userAction';
 
 const Course = ({
   views,
@@ -71,10 +77,25 @@ const Courses = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
 
+  const dispatch = useDispatch();
+
+  const { courses, loading, error, message } = useSelector(
+    state => state.courses
+  );
+
   //   Add To Playlist Handler
-  const addToPlaylistHandler = () => {
+  const addToPlaylistHandler = async courseId => {
     console.log('ADDED TO PLAYLIST');
+    console.log(courseId);
+    await dispatch(addToPlaylist(courseId));
+    dispatch(loadUser());
   };
+
+  useEffect(() => {
+    dispatch(getAllCourses(category, keyword));
+    message && toast.success(message);
+    error && toast.error(error);
+  }, [category, keyword, dispatch, message, error]);
 
   const categories = [
     'Web Development',
@@ -101,7 +122,6 @@ const Courses = () => {
           paddingY={'8'}
           css={{
             '&::-webkit-scrollbar': {
-              // display:"none"
               width: '2px',
             },
           }}
@@ -113,93 +133,34 @@ const Courses = () => {
               </Button>
             ))}
         </HStack>
-        <Stack
-          direction={['column', 'row']}
-          flexWrap={'wrap'}
-          justifyContent={['flex-start', 'space-evenly']}
-          alignItems={['center', 'flex-start']}
-        >
-          <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-            <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-            <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-            <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-            <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-            <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-             <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-             <Course
-            title={'Sample Title'}
-            description={'SampleDescription'}
-            views={23}
-            imageSrc={Poster}
-            id={'ampleId'}
-            creator={'sampleBoy'}
-            lectureCount={2}
-            addToPlaylistHandler={addToPlaylistHandler}
-          />
-        </Stack>
+        {loading ? (
+          <Loader />
+        ) : (
+          <Stack
+            direction={['column', 'row']}
+            flexWrap={'wrap'}
+            justifyContent={['flex-start', 'space-evenly']}
+            alignItems={['center', 'flex-start']}
+          >
+            {courses.length > 0 ? (
+              courses.map(item => (
+                <Course
+                  key={item._id}
+                  title={item.title}
+                  description={item.description}
+                  views={item.views}
+                  imageSrc={item.poster.url}
+                  id={item._id}
+                  creator={item.createdBy}
+                  lectureCount={item.numOfVideos}
+                  addToPlaylistHandler={addToPlaylistHandler}
+                />
+              ))
+            ) : (
+              <Heading mt={4}>Course Is Not Availbale Right Now</Heading>
+            )}
+          </Stack>
+        )}
       </Container>
     </>
   );

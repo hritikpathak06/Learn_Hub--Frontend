@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../../Meta/MetaData';
 import {
   Avatar,
@@ -10,7 +10,10 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../../../redux/actions/userAction';
+import toast from 'react-hot-toast';
 
 export const fileUploadCss = {
   cursor: 'pointer',
@@ -33,11 +36,9 @@ const Register = () => {
   const [imagePrev, setImagePrev] = useState('');
   const [image, setImage] = useState(null);
 
-  //   Register Handler
-  const registerHandler = event => {
-    event.preventDefault();
-    console.log('Form Submitted');
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, message, error } = useSelector(state => state.user);
 
   //   Image Handler
   const changeImageHandler = event => {
@@ -49,6 +50,29 @@ const Register = () => {
       setImage(file);
     };
   };
+
+  //   Register Handler
+  const registerHandler = event => {
+    event.preventDefault();
+    const myForm = new FormData();
+    myForm.append('name', name);
+    myForm.append('email', email);
+    myForm.append('password', password);
+    myForm.append('file', image);
+    dispatch(register(myForm));
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    }
+    if (message) {
+      toast.success(message);
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [isAuthenticated, message, error,navigate]);
 
   return (
     <>

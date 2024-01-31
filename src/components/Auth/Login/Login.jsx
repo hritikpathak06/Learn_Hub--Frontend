@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../../Meta/MetaData';
 import {
   Box,
@@ -9,17 +9,35 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../../redux/actions/userAction';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, message, error } = useSelector(state => state.user);
 
   //   Login Handler
   const loginHandler = event => {
     event.preventDefault();
-    console.log('Form Submitted');
+    dispatch(login(email, password));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+    if (message) {
+      toast.success(message);
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [isAuthenticated, message, error,navigate]);
 
   return (
     <>
@@ -29,7 +47,7 @@ const Login = () => {
           <Heading children="Welcome Back To Learn Hub" />
           <form style={{ width: '100%' }} onSubmit={loginHandler}>
             <Box marginY={'4'}>
-            <FormLabel htmlFor="email" children="Email Address" />
+              <FormLabel htmlFor="email" children="Email Address" />
               <Input
                 required
                 id="email"

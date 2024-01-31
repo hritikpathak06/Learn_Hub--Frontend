@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import MetaData from '../../Meta/MetaData';
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
+import { useDispatch} from 'react-redux';
+import { updateProfile } from '../../redux/actions/profileAction';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { loadUser } from '../../redux/actions/userAction';
 
-const UpdateProfile = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+const UpdateProfile = ({ user }) => {
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Change Password Handler
-  const UpdateProfileHandler = event => {
+  // Update Profile Handler
+  const UpdateProfileHandler = async event => {
     event.preventDefault();
+    toast.success('Profile Updated Successfully');
+   await dispatch(updateProfile(name, email));
+   dispatch(loadUser());
+    navigate('/profile');
   };
 
   return (

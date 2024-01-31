@@ -71,6 +71,7 @@ export const LineChart = () => {
   );
 };
 
+
 export const DoughnutChart = () => {
   const data = {
     labels: ['Subscribed', 'Not Subscribed'],

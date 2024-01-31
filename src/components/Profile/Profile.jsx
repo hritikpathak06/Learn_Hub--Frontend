@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../Meta/MetaData';
 import {
   Avatar,
@@ -24,54 +24,38 @@ import { NavLink } from 'react-router-dom';
 import Poster from '../../assets/images/logo-home.png';
 import { RiDeleteBin7Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../Auth/Register/Register';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  removeFromPlaylist,
+  updateProfilePicture,
+} from '../../redux/actions/profileAction';
+import toast from 'react-hot-toast';
+import { loadUser } from '../../redux/actions/userAction';
 
-const Profile = () => {
-  const user = {
-    name: 'Ritik Kumar Pathak',
-    email: 'ritik@gmail.com',
-    createdAt: String(new Date().toISOString()),
-    role: 'user',
-    subscription: {
-      status: undefined,
-    },
-    playlist: [
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-      {
-        course: 'ajklsd',
-        poster: Poster,
-      },
-    ],
-  };
-
-  const removeFromPlaylistHanlder = id => {
-    console.log(id);
+const Profile = ({ user }) => {
+  const removeFromPlaylistHanlder = async id => {
+    await dispatch(removeFromPlaylist(id));
+    dispatch(loadUser());
   };
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
+  const dispatch = useDispatch();
+
+  const { message, error } = useSelector(state => state.profile);
+
   const changeImageSubmitHandler = (e, image) => {
-    console.log(image);
+    // console.log(image);
     e.preventDefault();
+    const myForm = new FormData();
+    myForm.append('file', image);
+    dispatch(updateProfilePicture(myForm));
   };
+
+  useEffect(() => {
+    message && toast.success(message);
+    error && toast.error(error);
+  }, [message, error]);
 
   return (
     <>
@@ -91,7 +75,7 @@ const Profile = () => {
           p={8}
         >
           <VStack>
-            <Avatar boxSize={48} />
+            <Avatar boxSize={48} src={user.avatar.url} />
             <Button colorScheme="orange" variant={'ghost'} onClick={onOpen}>
               Change Pic
             </Button>
@@ -112,7 +96,7 @@ const Profile = () => {
             {user.role !== 'admin' && (
               <HStack>
                 <Text children="Subscription" fontWeight={'bold'} />
-                {user.subscription.status === 'active' ? (
+                {user.subscription && user.subscription.status === 'active' ? (
                   <Button colorScheme="red">Cancel Subscription</Button>
                 ) : (
                   <NavLink to={'/subscribe'}>
@@ -178,8 +162,6 @@ const Profile = () => {
 };
 export default Profile;
 
-
-
 // Update Profile Pic Function
 function ChangePhotoBox({
   isOpen,
@@ -225,11 +207,7 @@ function ChangePhotoBox({
                   onChange={changeImage}
                 />
 
-                <Button
-                  w="full"
-                  colorScheme={'orange'}
-                  type="submit"
-                >
+                <Button w="full" colorScheme={'orange'} type="submit">
                   Change
                 </Button>
               </VStack>
