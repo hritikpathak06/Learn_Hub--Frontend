@@ -75,4 +75,19 @@ export const userReducer = createReducer(
 );
 
 
+export const usersReducer = createReducer({users:[]},{
+  allUsersRequest :(state) => {
+    state.loading = true;
+  },
+  allUsersSuccess :(state,action) => {
+    state.loading = false;
+    state.users = action.payload
+  },
+  allUsersFail :(state,action) => {
+    state.loading = false;
+    state.users = [];
+    state.error = action.payload
+  },
+})
+
 

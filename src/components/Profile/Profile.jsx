@@ -43,16 +43,16 @@ const Profile = ({ user }) => {
 
   const dispatch = useDispatch();
 
+
   const { message, error } = useSelector(state => state.profile);
   const { message: subscriptionMessage, error: subscriptionError } =
     useSelector(state => state.subscription);
-
-  const changeImageSubmitHandler = (e, image) => {
-    // console.log(image);
+  const changeImageSubmitHandler = async (e, image) => {
     e.preventDefault();
     const myForm = new FormData();
     myForm.append('file', image);
-    dispatch(updateProfilePicture(myForm));
+    await dispatch(updateProfilePicture(myForm));
+    dispatch(loadUser());
   };
 
   // Cancel Subscription Handler

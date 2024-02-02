@@ -8,9 +8,21 @@ export const adminReducer = createReducer(
     },
     createCourseSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload
+      state.message = action.payload;
     },
     createCourseFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    deleteCourseRequest: state => {
+      state.loading = true;
+    },
+    deleteCourseSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteCourseFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -20,9 +32,45 @@ export const adminReducer = createReducer(
     },
     addLectureSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload
+      state.message = action.payload;
     },
     addLectureFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    deleteLectureRequest: state => {
+      state.loading = true;
+    },
+    deleteLectureSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteLectureFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    updateUserRoleRequest: state => {
+      state.loading = true;
+    },
+    updateUserRoleSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    updateUserRoleFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    deleteUserRequest: state => {
+      state.loading = true;
+    },
+    deleteUserSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    deleteUserFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

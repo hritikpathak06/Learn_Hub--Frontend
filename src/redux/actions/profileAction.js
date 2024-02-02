@@ -49,6 +49,7 @@ export const changePassword = (oldPassword, newPassword) => async dispatch => {
   }
 };
 
+
 // Update Profile Picture
 export const updateProfilePicture = formdata => async dispatch => {
   try {
@@ -58,7 +59,7 @@ export const updateProfilePicture = formdata => async dispatch => {
       formdata,
       {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
         withCredentials: true,
       }

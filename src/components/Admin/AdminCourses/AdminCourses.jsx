@@ -25,66 +25,37 @@ import {
   getAllCourses,
   getCourseLectures,
 } from '../../../redux/actions/courseAction';
-import { addLecture } from '../../../redux/actions/adminAction';
+import {
+  addLecture,
+  deleteCourse,
+  deleteLecture,
+} from '../../../redux/actions/adminAction';
+import toast from 'react-hot-toast';
 
 const AdminCourses = () => {
-  // const courses = [
-  //   {
-  //     _id: 1,
-  //     poster: {
-  //       url: <Cursor />,
-  //     },
-  //     title: 'React Course',
-  //     category: 'development',
-  //     createdBy: 'Ritik Pathak',
-  //     views: 300,
-  //     numOfVideos: 15,
-  //   },
-  //   {
-  //     _id: 2,
-  //     poster: {
-  //       url: <Cursor />,
-  //     },
-  //     title: 'React Course',
-  //     category: 'development',
-  //     createdBy: 'Ritik Pathak',
-  //     views: 300,
-  //     numOfVideos: 15,
-  //   },
-  //   {
-  //     _id: 3,
-  //     poster: {
-  //       url: <Cursor />,
-  //     },
-  //     title: 'React Course',
-  //     category: 'development',
-  //     createdBy: 'Ritik Pathak',
-  //     views: 300,
-  //     numOfVideos: 15,
-  //   },
-  // ];
-
-  const[courseId,setCourseId] = useState("")
-  const[courseTitle,setCourseTitle] = useState("");
+  const [courseId, setCourseId] = useState('');
+  const [courseTitle, setCourseTitle] = useState('');
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const { courses, lectures,loading } = useSelector(state => state.courses);
   const dispatch = useDispatch();
 
-  const courseDetailHandler = (courseId,title) => {
+  const { courses, lectures } = useSelector(state => state.courses);
+  const { message, error, loading } = useSelector(state => state.admin);
+
+  const courseDetailHandler = (courseId, title) => {
     dispatch(getCourseLectures(courseId));
     onOpen();
-    setCourseId(courseId)
-    setCourseTitle(title)
+    setCourseId(courseId);
+    setCourseTitle(title);
   };
 
-  const deleteLectureHandler = id => {
-    console.log('deleted', id);
+  const deleteCourseHandler = async id => {
+    await dispatch(deleteCourse(id));
+    dispatch(getAllCourses());
   };
 
-  const deleteButtonHandler = (courseId, lectureId) => {
-    console.log('CourseId', courseId);
-    console.log('LectureId', lectureId);
+  const deleteButtonHandler = async (courseId, lectureId) => {
+    await dispatch(deleteLecture(courseId, lectureId));
+    dispatch(getCourseLectures(courseId));
   };
 
   const addLectureHandler = (e, courseId, title, description, video) => {
@@ -94,13 +65,13 @@ const AdminCourses = () => {
     myForm.append('description', description);
     myForm.append('file', video);
     dispatch(addLecture(courseId, myForm));
-    console.log('Form Submitted');
-    console.log("Id",courseId)
   };
 
   useEffect(() => {
     dispatch(getAllCourses());
-  }, []);
+    message && toast.success(message);
+    error && toast.error(error);
+  }, [message, error, dispatch]);
 
   return (
     <>
@@ -142,9 +113,10 @@ const AdminCourses = () => {
                 {courses.map(item => (
                   <Row
                     courseDetailHandler={courseDetailHandler}
-                    deleteLectureHandler={deleteLectureHandler}
+                    deleteCourseHandler={deleteCourseHandler}
                     key={item._id}
                     item={item}
+                    loading={loading}
                   />
                 ))}
               </Tbody>
@@ -167,10 +139,9 @@ const AdminCourses = () => {
     </>
   );
 };
-
 export default AdminCourses;
 
-function Row({ item, courseDetailHandler, deleteLectureHandler }) {
+function Row({ item, courseDetailHandler, deleteCourseHandler, loading }) {
   return (
     <Tr>
       <Td>{item._id}</Td>
@@ -187,13 +158,14 @@ function Row({ item, courseDetailHandler, deleteLectureHandler }) {
           <Button
             variant={'outlined'}
             color={'purple'}
-            onClick={() => courseDetailHandler(item._id,item.title)}
+            onClick={() => courseDetailHandler(item._id, item.title)}
           >
             View Lecture
           </Button>
           <Button
             colorScheme="red"
-            onClick={() => deleteLectureHandler(item._id)}
+            onClick={() => deleteCourseHandler(item._id)}
+            isLoading={loading}
           >
             Delete
           </Button>

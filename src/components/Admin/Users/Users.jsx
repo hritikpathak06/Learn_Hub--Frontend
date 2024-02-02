@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MetaData from '../../../Meta/MetaData';
 import {
   Box,
@@ -17,66 +17,34 @@ import {
 } from '@chakra-ui/react';
 import Cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Dashboard/Sidebar';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import {
+  deleteUser,
+  getAllUsers,
+  updateUserRole,
+} from '../../../redux/actions/adminAction';
 
 const Users = () => {
-  const users = [
-    {
-      _id: 'bnss',
-      name: 'riropr',
-      email: 'djdsfkf',
-      role: 'ssjsd',
-      // subscription:"true",
-      subscription: {
-        status: 'not',
-      },
-    },
-    {
-      _id: 'bnss',
-      name: 'riropr',
-      email: 'djdsfkf',
-      role: 'ssjsd',
-      // subscription:"true",
-      subscription: {
-        status: 'active',
-      },
-    },
-    {
-      _id: 'bnss',
-      name: 'riropr',
-      email: 'djdsfkf',
-      role: 'ssjsd',
-      // subscription:"true",
-      subscription: {
-        status: 'active',
-      },
-    },
-    {
-      _id: 'bnss',
-      name: 'riropr',
-      email: 'djdsfkf',
-      role: 'ssjsd',
-      subscription: {
-        status: 'active',
-      },
-    },
-    {
-      _id: 'bnss',
-      name: 'riropr',
-      email: 'djdsfkf',
-      role: 'ssjsd',
-      subscription: {
-        status: 'active',
-      },
-    },
-  ];
-
-  const updateRoleHandler = id => {
-    console.log('updated', id);
+  const dispatch = useDispatch();
+  const { users } = useSelector(state => state.users);
+  const { message, error } = useSelector(state => state.admin);
+  const updateRoleHandler = async id => {
+    await dispatch(updateUserRole(id));
+    dispatch(getAllUsers());
   };
 
-  const deleteUserHandler = id => {
-    console.log('deleted', id);
+  const deleteUserHandler = async id => {
+    await dispatch(deleteUser(id));
+    toast.success('User Deleted Successfully');
+    dispatch(getAllUsers());
   };
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+    message && toast.success(message);
+    error && toast.error(error);
+  }, [message, error]);
 
   return (
     <>
@@ -121,7 +89,7 @@ const Users = () => {
                         : 'Not Active'}
                     </Td>
                     <Td isNumeric>
-                      <HStack justifyContent={'flex-end'} ml={'-8rem'}>
+                      <HStack justifyContent={'flex-end'} ml={'-2rem'}>
                         <Button
                           variant={'outlined'}
                           color={'purple'}
