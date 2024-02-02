@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 export const courseReducer = createReducer(
-  { courses: [] },
+  { courses: [],lectures:[] },
   {
     // Fetch All Course
     allCoursesRequest: state => {
@@ -25,6 +25,20 @@ export const courseReducer = createReducer(
       state.message = action.payload;
     },
     addToPlaylistFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
+    // Get Course Lectures
+    getCourseLecturesRequest: state => {
+      state.loading = true;
+    },
+    getCourseLecturesSuccess: (state, action) => {
+      state.loading = false;
+      state.lectures = action.payload;
+    },
+    getCourseLecturesFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },

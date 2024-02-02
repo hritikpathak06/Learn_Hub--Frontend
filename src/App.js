@@ -48,7 +48,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
-            <Route path="/course/:id" element={<CourseDetail />} />
+            <Route
+              path="/course/:id"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <CourseDetail user={user} />
+                </ProtectedRoute>
+              }
+            />
 
             <Route
               path="/login"
@@ -56,7 +63,6 @@ function App() {
                 <ProtectedRoute
                   isAuthenticated={!isAuthenticated}
                   redirect="/profile"
-
                 >
                   <Login />
                 </ProtectedRoute>
@@ -87,7 +93,7 @@ function App() {
               path="/updateprofile"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  <UpdateProfile user={user}/>
+                  <UpdateProfile user={user} />
                 </ProtectedRoute>
               }
             />

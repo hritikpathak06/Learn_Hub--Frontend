@@ -44,7 +44,8 @@ const Profile = ({ user }) => {
   const dispatch = useDispatch();
 
   const { message, error } = useSelector(state => state.profile);
-  const { message:subscriptionMessage, error:subscriptionError } = useSelector(state => state.subscription);
+  const { message: subscriptionMessage, error: subscriptionError } =
+    useSelector(state => state.subscription);
 
   const changeImageSubmitHandler = (e, image) => {
     // console.log(image);
@@ -55,17 +56,17 @@ const Profile = ({ user }) => {
   };
 
   // Cancel Subscription Handler
-  const cancelSubscriptionHandler = async() => {
+  const cancelSubscriptionHandler = async () => {
     await dispatch(cancelSubscription());
     dispatch(loadUser());
-  }
+  };
 
   useEffect(() => {
     message && toast.success(message);
     error && toast.error(error);
     subscriptionMessage && toast.success(subscriptionMessage);
-    subscriptionError && toast.error(subscriptionError)
-  }, [message, error,subscriptionError,subscriptionMessage]);
+    subscriptionError && toast.error(subscriptionError);
+  }, [message, error, subscriptionError, subscriptionMessage]);
 
   return (
     <>
@@ -107,7 +108,9 @@ const Profile = ({ user }) => {
               <HStack>
                 <Text children="Subscription" fontWeight={'bold'} />
                 {user.subscription && user.subscription.status === 'active' ? (
-                  <Button colorScheme="red" onClick={cancelSubscriptionHandler}>Cancel Subscription</Button>
+                  <Button colorScheme="red" onClick={cancelSubscriptionHandler}>
+                    Cancel Subscription
+                  </Button>
                 ) : (
                   <NavLink to={'/subscribe'}>
                     <Button colorScheme="orange"> Subscription</Button>

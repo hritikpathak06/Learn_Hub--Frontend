@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../../Meta/MetaData';
 import {
   Avatar,
@@ -15,6 +15,10 @@ import {
 import Cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Dashboard/Sidebar';
 import { fileUploadCss } from '../../Auth/Register/Register';
+import { createCourse } from '../../../redux/actions/adminAction';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
@@ -23,7 +27,6 @@ const CreateCourse = () => {
   const [category, setCategory] = useState('');
   const [image, setImage] = useState('');
   const [imagePrev, setImagePrev] = useState('');
-
   const categories = [
     'Web Development',
     'Artificial Intelligence',
@@ -32,6 +35,9 @@ const CreateCourse = () => {
     'Game Development',
     'Data Science',
   ];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //   Image Handler
   const changeImageHandler = event => {
@@ -44,6 +50,25 @@ const CreateCourse = () => {
     };
   };
 
+  const createCourseHandler = event => {
+    event.preventDefault();
+    const myForm = new FormData();
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('category', category);
+    myForm.append('createdBy', createdBy);
+    myForm.append('file', image);
+    dispatch(createCourse(myForm));
+    navigate('/admin/courses');
+  };
+
+  const { message, error } = useSelector(state => state.admin);
+
+  useEffect(() => {
+    message && toast.success(message);
+    error && toast.error(error);
+  }, [message, error]);
+
   return (
     <>
       <MetaData title={'Learn Hub || Admin Create Course'} />
@@ -53,7 +78,7 @@ const CreateCourse = () => {
         css={{ cursor: `url(${Cursor}),default` }}
       >
         <Container py={16}>
-          <form>
+          <form onSubmit={createCourseHandler}>
             <Heading
               textTransform={'uppercase'}
               children="Create Course"

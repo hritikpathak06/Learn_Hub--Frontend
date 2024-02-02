@@ -18,9 +18,10 @@ import {
 import React, { useState } from 'react';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../../Auth/Register/Register';
+import { useSelector } from 'react-redux';
 
 const CourseModal = ({
-  lectures = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  lectures = [],
   isOpen,
   onClose,
   id,
@@ -32,6 +33,8 @@ const CourseModal = ({
   const [description, setDescription] = useState('');
   const [video, setVideo] = useState('');
   const [videoPrev, setVideoPrev] = useState('');
+
+  const { loading } = useSelector(state => state.admin);
 
   const changeVideoHandler = event => {
     const file = event.target.files[0];
@@ -65,10 +68,10 @@ const CourseModal = ({
                   {lectures.map((item, index) => (
                     <VideoCard
                       key={index}
-                      title={'ReactJs'}
-                      description={'nsdkndsdjsfdjsjfdkifdjdeffjfjef'}
+                      title={item.title}
+                      description={item.description}
                       num={index + 1}
-                      lectureId={'ghdhd'}
+                      lectureId={item._id}
                       courseId={id}
                       deleteButtonHandler={deleteButtonHandler}
                     />
@@ -114,7 +117,12 @@ const CourseModal = ({
                         src={videoPrev}
                       ></video>
                     )}
-                    <Button width={'full'} colorScheme="purple" type="submit">
+                    <Button
+                      width={'full'}
+                      colorScheme="purple"
+                      type="submit"
+                      isLoading={loading}
+                    >
                       Add Lecture
                     </Button>
                   </VStack>

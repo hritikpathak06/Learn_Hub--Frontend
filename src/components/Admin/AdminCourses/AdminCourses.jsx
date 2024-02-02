@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MetaData from '../../../Meta/MetaData';
 import {
   Box,
@@ -20,49 +20,62 @@ import {
 import Cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Dashboard/Sidebar';
 import CourseModal from './CourseModal';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAllCourses,
+  getCourseLectures,
+} from '../../../redux/actions/courseAction';
+import { addLecture } from '../../../redux/actions/adminAction';
 
 const AdminCourses = () => {
-  const courses = [
-    {
-      _id: 1,
-      poster: {
-        url: <Cursor />,
-      },
-      title: 'React Course',
-      category: 'development',
-      createdBy: 'Ritik Pathak',
-      views: 300,
-      numOfVideos: 15,
-    },
-    {
-      _id: 2,
-      poster: {
-        url: <Cursor />,
-      },
-      title: 'React Course',
-      category: 'development',
-      createdBy: 'Ritik Pathak',
-      views: 300,
-      numOfVideos: 15,
-    },
-    {
-      _id: 3,
-      poster: {
-        url: <Cursor />,
-      },
-      title: 'React Course',
-      category: 'development',
-      createdBy: 'Ritik Pathak',
-      views: 300,
-      numOfVideos: 15,
-    },
-  ];
+  // const courses = [
+  //   {
+  //     _id: 1,
+  //     poster: {
+  //       url: <Cursor />,
+  //     },
+  //     title: 'React Course',
+  //     category: 'development',
+  //     createdBy: 'Ritik Pathak',
+  //     views: 300,
+  //     numOfVideos: 15,
+  //   },
+  //   {
+  //     _id: 2,
+  //     poster: {
+  //       url: <Cursor />,
+  //     },
+  //     title: 'React Course',
+  //     category: 'development',
+  //     createdBy: 'Ritik Pathak',
+  //     views: 300,
+  //     numOfVideos: 15,
+  //   },
+  //   {
+  //     _id: 3,
+  //     poster: {
+  //       url: <Cursor />,
+  //     },
+  //     title: 'React Course',
+  //     category: 'development',
+  //     createdBy: 'Ritik Pathak',
+  //     views: 300,
+  //     numOfVideos: 15,
+  //   },
+  // ];
 
+  const[courseId,setCourseId] = useState("")
+  const[courseTitle,setCourseTitle] = useState("");
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const courseDetailHandler = id => {
-    // console.log('updated', id);
+  const { courses, lectures,loading } = useSelector(state => state.courses);
+  const dispatch = useDispatch();
+
+  const courseDetailHandler = (courseId,title) => {
+    dispatch(getCourseLectures(courseId));
     onOpen();
+    setCourseId(courseId)
+    setCourseTitle(title)
   };
 
   const deleteLectureHandler = id => {
@@ -76,8 +89,18 @@ const AdminCourses = () => {
 
   const addLectureHandler = (e, courseId, title, description, video) => {
     e.preventDefault();
+    const myForm = new FormData();
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('file', video);
+    dispatch(addLecture(courseId, myForm));
     console.log('Form Submitted');
+    console.log("Id",courseId)
   };
+
+  useEffect(() => {
+    dispatch(getAllCourses());
+  }, []);
 
   return (
     <>
@@ -129,14 +152,14 @@ const AdminCourses = () => {
             </Table>
           </TableContainer>
           <CourseModal
-            // lectures
+            lectures={lectures}
             isOpen={isOpen}
             onClose={onClose}
             onOpen={onOpen}
-            id={'anjsjjs'}
+            id={courseId}
             deleteButtonHandler={deleteButtonHandler}
             addLectureHandler={addLectureHandler}
-            courseTitle={'React Js'}
+            courseTitle={courseTitle}
           />
         </Box>
         <Sidebar />
@@ -164,7 +187,7 @@ function Row({ item, courseDetailHandler, deleteLectureHandler }) {
           <Button
             variant={'outlined'}
             color={'purple'}
-            onClick={() => courseDetailHandler(item._id)}
+            onClick={() => courseDetailHandler(item._id,item.title)}
           >
             View Lecture
           </Button>
