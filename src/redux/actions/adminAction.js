@@ -117,16 +117,29 @@ export const updateUserRole = id => async dispatch => {
 export const deleteUser = id => async dispatch => {
   try {
     dispatch({ type: 'deleteUserRequest' });
-    const { data } = await axios.delete(
-      `${server}/admin/user/${id}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const { data } = await axios.delete(`${server}/admin/user/${id}`, {
+      withCredentials: true,
+    });
     dispatch({ type: 'deleteUserSuccess', payload: data.message });
   } catch (error) {
     dispatch({
       type: 'deleteUserFail',
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get Dashboard Stats
+export const getDashboardStats = () => async dispatch => {
+  try {
+    dispatch({ type: 'getAdminStatsRequest' });
+    const { data } = await axios.get(`${server}/admin/stats`, {
+      withCredentials: true,
+    });
+    dispatch({ type: 'getAdminStatsSuccess', payload: data });
+  } catch (error) {
+    dispatch({
+      type: 'getAdminStatsFail',
       payload: error.response.data.message,
     });
   }
