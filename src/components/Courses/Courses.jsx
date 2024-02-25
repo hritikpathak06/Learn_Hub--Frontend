@@ -32,7 +32,7 @@ const Course = ({
 }) => {
   return (
     <VStack className="course" alignItems={['center', 'flex-start']}>
-      <Image src={imageSrc} boxSize={'60'} objectFit={'contain'} />
+      <Image src={imageSrc} boxSize={'60'} objectFit={'cover'} />
       <Heading
         textAlign={['center', 'left']}
         maxW={'200px'}
@@ -43,7 +43,11 @@ const Course = ({
       />
       <Text children={description} noOfLines={2} />
       <HStack>
-        <Text children={'Creator'} textTransform={'uppercase'} />
+        <Text
+          children={'Creator-'}
+          textTransform={'uppercase'}
+          fontWeight={'bolder'}
+        />
         <Text children={creator} textTransform={'uppercase'} />
       </HStack>
       <Heading
@@ -62,8 +66,8 @@ const Course = ({
           <Button colorScheme="orange">Watch Now</Button>
         </NavLink>
         <Button
-          variant={'ghost'}
-          colorScheme="orange"
+          // variant={'ghost'}
+          colorScheme="gray"
           onClick={() => addToPlaylistHandler(id)}
         >
           Add To Playlist
@@ -105,6 +109,7 @@ const Courses = () => {
     'Game Development',
     'Data Science',
   ];
+
   return (
     <>
       <MetaData title={'Learn Hub || Our Featured Courses'} />

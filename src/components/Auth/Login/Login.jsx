@@ -37,7 +37,7 @@ const Login = () => {
     if (error) {
       toast.error(error);
     }
-  }, [isAuthenticated, message, error,navigate]);
+  }, [isAuthenticated, message, error, navigate]);
 
   return (
     <>
@@ -53,7 +53,7 @@ const Login = () => {
                 id="email"
                 value={email}
                 onChange={event => setEmail(event.target.value)}
-                placeholder="Enter Your Email"
+                placeholder="phritik06@gmail.com"
                 type="email"
                 focusBorderColor="orange.500"
               />
@@ -65,7 +65,7 @@ const Login = () => {
                 id="password"
                 value={password}
                 onChange={event => setPassword(event.target.value)}
-                placeholder="Enter Your Password"
+                placeholder="1234567890"
                 type="password"
                 focusBorderColor="orange.500"
               />

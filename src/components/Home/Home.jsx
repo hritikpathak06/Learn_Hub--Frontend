@@ -15,9 +15,9 @@ import LOGO from '../../assets/images/logo-home.png';
 import { CgGoogle, CgYoutube } from 'react-icons/cg';
 import { SiCoursera, SiUdemy } from 'react-icons/si';
 import { DiAndroid, DiAws } from 'react-icons/di';
-import HomeVideo from '../../assets/videos/intro.mp4';
+import HomeVideo from '../../assets/videos/learnhub.mp4';
 import MetaData from '../../Meta/MetaData';
-
+import BG from '../../assets/images/bg.png';
 
 const Home = () => {
   return (
@@ -54,6 +54,38 @@ const Home = () => {
               objectFit={'contain'}
               className="home__image"
             />
+          </Stack>
+        </div>
+        <div className="container">
+          <Stack
+            direction={['column', 'row']}
+            height="100%"
+            justifyContent={['center', 'space-between']}
+            alignItems="center"
+            spacing={['16', '56']}
+          >
+            <Image
+              boxSize={'md'}
+              src={BG}
+              objectFit={'contain'}
+              className="home__image"
+            />
+            <VStack width={'full'} alignItems={['center', 'flex-end']}>
+              <Heading
+                children="LEARN THE BEST COURSES"
+                size={'2xl'}
+                textAlign={['center', 'flex-start']}
+              />
+              <Text
+                textAlign={['center', 'flex-start']}
+                children="Find Valuable Courses From The Top Experts"
+              />
+              <NavLink to="/courses">
+                <Button size={'lg'} colorScheme="orange">
+                  GET STARTED
+                </Button>
+              </NavLink>
+            </VStack>
           </Stack>
         </div>
         <Box padding={'8'} bg={'blackAlpha.700'}>

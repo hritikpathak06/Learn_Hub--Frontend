@@ -5,6 +5,7 @@ import HomeVideo from '../../assets/videos/intro.mp4';
 import { Navigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCourseLectures } from '../../redux/actions/courseAction';
+import './courseDetail.css';
 
 const CourseDetail = ({ user }) => {
   const [lectureNumber, setLectureNumber] = useState(0);
@@ -27,7 +28,7 @@ const CourseDetail = ({ user }) => {
 
   useEffect(() => {
     dispatch(getCourseLectures(id));
-  }, [dispatch,id]);
+  }, [dispatch, id]);
 
   if (user.role !== 'admin') {
     if (
@@ -46,8 +47,9 @@ const CourseDetail = ({ user }) => {
           <>
             <Box>
               <video
+                className="video"
                 width={'100%'}
-                // src={HomeVideo}
+                style={{ objectFit: 'contain', height: '70vh' }}
                 src={lectures[lectureNumber].video.url}
                 controls
                 controlsList="nodownload  noremoteplayback"
@@ -71,6 +73,9 @@ const CourseDetail = ({ user }) => {
                   p={4}
                   textAlign={'center'}
                   m={0}
+                  ml={[6]}
+                  textColor={'#fff'}
+                  bg={'#000'}
                   borderBottom={'1px solid gray'}
                   onClick={() => setLectureNumber(index)}
                 >
