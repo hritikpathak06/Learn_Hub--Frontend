@@ -9,8 +9,13 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import BG from '../../assets/images/bg.png';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const HomeHeader = () => {
+  const { isAuthenticated, user, loading } = useSelector(state => state.user);
+  const navigate = useNavigate();
+
   return (
     <>
       <div style={{ marginTop: '6rem' }}>
@@ -58,11 +63,11 @@ const HomeHeader = () => {
               Join our online community and learn from our professional
             </Text>
             <Stack direction={'row'} marginLeft={['0px', '50px']} mt={'1rem'}>
-              <Button p={'25px'} color={'gray'}>
+              <Button p={'25px'} color={'gray'} onClick={() => navigate("/courses")}>
                 View Courses
               </Button>
-              <Button p={'25px'} color={'#fff'} bg={'tomato'}>
-                Create Account
+              <Button p={'25px'} color={'#fff'} bg={'tomato'} onClick={() => navigate(isAuthenticated ? "/profile" : "login")}>
+               {isAuthenticated ? "Your Profile" : " Create Account"}
               </Button>
             </Stack>
             <Stack
