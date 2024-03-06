@@ -31,10 +31,18 @@ const Course = ({
   lectureCount,
 }) => {
   return (
-    <VStack className="course" alignItems={['center', 'flex-start']}>
-      <Image src={imageSrc} boxSize={'60'} objectFit={'cover'} />
+    <VStack
+      className="course"
+      alignItems={['center', 'flex-start']}
+      mt={['1rem', '2rem']}
+      pb={5}
+      style={{
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <Image src={imageSrc} boxSize={'60'} objectFit={'cover'} width={'100%'} />
       <Heading
-        textAlign={['center', 'left']}
+        textAlign={['center', 'center']}
         maxW={'200px'}
         fontFamily={'sans-serif'}
         noOfLines={3}
@@ -61,7 +69,12 @@ const Course = ({
         size={'xs'}
         children={`Views- ${views}`}
       />
-      <Stack direction={['column', 'row']} alignItems={'center'}>
+      <Stack
+        direction={['column', 'row']}
+        alignItems={'center'}
+        justifyContent={'center'}
+        m={'auto'}
+      >
         <NavLink to={`/course/${id}`}>
           <Button colorScheme="orange">Watch Now</Button>
         </NavLink>
@@ -113,39 +126,65 @@ const Courses = () => {
   return (
     <>
       <MetaData title={'Learn Hub || Our Featured Courses'} />
-      <Container minH={'95vh'} maxW={'90%'} paddingY={'8'}>
-        <Heading children="All Courses" m={'8'} />
-        <Input
-          value={keyword}
-          onChange={event => setKeyword(event.target.value)}
-          placeholder="Search Your Favorite Course..."
-          type="text"
-          focusBorderColor="orange.300"
-        />
-        <HStack
-          overflowX={'auto'}
-          paddingY={'8'}
-          css={{
-            '&::-webkit-scrollbar': {
-              width: '2px',
-            },
-          }}
-        >
-          {categories &&
-            categories.map((item, index) => (
-              <Button minW={'60'} onClick={() => setCategory(item)} key={index}>
-                <Text children={item} />
-              </Button>
-            ))}
-        </HStack>
+      <Heading
+        children="All Courses"
+        textAlign={'center'}
+        mt={6}
+        fontSize={'3rem'}
+        fontWeight={900}
+        variant={'h1'}
+      />
+      <Container
+        h={'95vh'}
+        maxW={'100%'}
+        paddingY={'8'}
+        width={'100%'}
+        className="container"
+      >
+        <Stack width={['100%', '20%']} height={['max-content', '80%']}>
+          <Input
+            value={keyword}
+            onChange={event => setKeyword(event.target.value)}
+            placeholder="Search Your Favorite Course..."
+            type="text"
+            focusBorderColor="orange.300"
+          />
+          <Stack
+            overflowX={'auto'}
+            paddingY={'8'}
+            css={{
+              '&::-webkit-scrollbar': {
+                width: '2px',
+              },
+            }}
+            direction={['row', 'column']}
+          >
+            {categories &&
+              categories.map((item, index) => (
+                <Button
+                  minW={'100%'}
+                  onClick={() => setCategory(item)}
+                  key={index}
+                >
+                  <Text children={item} />
+                </Button>
+              ))}
+          </Stack>
+        </Stack>
         {loading ? (
           <Loader />
         ) : (
-          <Stack
-            direction={['column', 'row']}
-            flexWrap={'wrap'}
-            justifyContent={['flex-start', 'space-evenly']}
-            alignItems={['center', 'flex-start']}
+          <div
+            // direction={['column', 'row']}
+            // direction={["column","row"]}
+            // flexWrap={'wrap'}
+            // justifyContent={['flex-start', 'space-evenly']}
+            // alignItems={['center', 'flex-start']}
+            // width={'80%'}
+            className="course__stack"
+            // // mt={['30px', '80px']}
+            // height={["max-content","65vh"]}
+            // overflow={"scroll"}
           >
             {courses.length > 0 ? (
               courses.map(item => (
@@ -164,7 +203,7 @@ const Courses = () => {
             ) : (
               <Heading mt={4}>Course Is Not Availbale Right Now</Heading>
             )}
-          </Stack>
+          </div>
         )}
       </Container>
     </>

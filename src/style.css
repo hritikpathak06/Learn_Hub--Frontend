@@ -1,0 +1,29 @@
+* {
+  cursor: url('./assets/images/cursor.png'), auto;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  overflow: scroll;
+}
+
+.course__stack {
+  display: flex !important;
+  flex-direction: row;
+  width: 80%;
+  flex-wrap: wrap;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+@media screen and (max-width: 700px) {
+  .container {
+    flex-direction: column;
+  }
+  .course__stack {
+    flex-direction: column;
+    width: 100%;
+  }
+}

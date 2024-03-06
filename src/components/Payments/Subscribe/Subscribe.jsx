@@ -79,7 +79,7 @@ const Subscribe = ({ user }) => {
   return (
     <>
       <MetaData title={'Learn Hub || Subscribe To enjoy Unlimited Courses'} />
-      <Container h={'100vh'} p={16}>
+      <Container h={'100vh'} p={16} >
         <Heading children="Welcome" m={'8'} textAlign={'center'} />
         <VStack
           boxShadow={'lg'}

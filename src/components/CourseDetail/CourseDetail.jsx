@@ -66,6 +66,7 @@ const CourseDetail = ({ user }) => {
               <Text m={4} children={lectures[lectureNumber].description} />
             </Box>
             <VStack>
+              <Heading variant="h3" fontWeight={900} mb={"1rem"}>All Lectures</Heading>
               {lectures.map((element, index) => (
                 <Button
                   key={element._id}
