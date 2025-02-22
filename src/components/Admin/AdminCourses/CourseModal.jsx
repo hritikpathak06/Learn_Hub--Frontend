@@ -15,7 +15,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { RiDeleteBack2Fill } from 'react-icons/ri';
 import { fileUploadCss } from '../../Auth/Register/Register';
 import { useSelector } from 'react-redux';
@@ -139,7 +139,7 @@ const CourseModal = ({
   );
 };
 
-export default CourseModal;
+export default CourseModal ;
 
 // Function For Video Card
 function VideoCard({

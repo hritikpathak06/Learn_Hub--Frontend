@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../../redux/actions/userAction';
 import toast from 'react-hot-toast';
 
+
+
 export const fileUploadCss = {
   cursor: 'pointer',
   marginLeft: '-5%',

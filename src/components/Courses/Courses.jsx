@@ -36,11 +36,12 @@ const Course = ({
       alignItems={['center', 'flex-start']}
       mt={['1rem', '2rem']}
       pb={5}
+      p={3}
       style={{
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <Image src={imageSrc} boxSize={'60'} objectFit={'cover'} width={'100%'} />
+      <Image src={imageSrc} boxSize={'60'} objectFit={"cover"} width={'100%'} />
       <Heading
         textAlign={['center', 'center']}
         maxW={'200px'}

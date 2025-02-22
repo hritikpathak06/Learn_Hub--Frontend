@@ -32,6 +32,7 @@ const Course = ({
       mt={['1rem', '2rem']}
       ml={['2rem', '4rem']}
       pb={5}
+      p={3}
       style={{
         boxShadow: '0 4px 16px rgba(0, 0, 0, 0.1)',
       }}
